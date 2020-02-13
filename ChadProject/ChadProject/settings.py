@@ -137,3 +137,6 @@ from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
     messages.ERROR : 'danger'
 }
+
+# Setting custom-made User as default
+AUTH_USER_MODEL = 'Accounts.User'

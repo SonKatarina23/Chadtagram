@@ -1,0 +1,54 @@
+a {
+  text-decoration: none !important;
+}
+
+#right-side {
+  position: fixed;
+  top: 8%;
+  right: 15%;
+  /* max-width: 25%; */
+}
+
+#scroll {
+  overflow-x: hidden;
+  overflow-x: scroll;
+  text-align: justify;
+  height: 600px;
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+#scroll::-webkit-scrollbar {
+  display: none;
+}
+
+#profile-picture {
+  border-radius: 50%;
+  width: 180px !important;
+  height: 180px !important;
+  border-color: #c2047f !important;
+  border-width: 2px !important;
+  margin-left: 150px !important;
+}
+
+#follow-profile {
+  width: 120px;
+}
+
+#photo-feed {
+  width: 250px !important;
+  height: 250px !important;
+  border: 0.25px groove black;
+}
+
+.test {
+  background-color: red;
+}
+
+.test2 {
+  background-color: blue;
+}
+
+.test3 {
+  background-color: aqua;
+}

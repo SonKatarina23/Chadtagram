@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- SEMANTIC UI -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"
+    />
+
+    <!-- BOOTSTRAP -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" href="style.css" />
+    <title>Login</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="col-md-4 m-auto">
+        <div class="card card-body mt-5 mb-3">
+          <img
+            class="ui medium mx-auto image mb-3"
+            src="Chadtagram.png"
+            alt=""
+          />
+          <form class="mt-3">
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                name="username"
+                value=""
+                placeholder="Username"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="password"
+                class="form-control"
+                name="password1"
+                value=""
+                placeholder="Password"
+              />
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-block">
+                Login
+              </button>
+            </div>
+          </form>
+          <hr />
+          <div class="text-center">
+            <p class="lead">Get the App</p>
+            <div class="row">
+              <div class="col-md-6 mx-auto">
+                <a
+                  href="https://itunes.apple.com/app/instagram/id389801252?pt=428156&ct=igweb.loginPage.badge&mt=8&vt=lo"
+                >
+                  <img src="appstore.png" alt="" class="img img-fluid py-2"
+                /></a>
+              </div>
+              <div class="col-md-6">
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.instagram.android&referrer=utm_source%3Dinstagramweb%26utm_campaign%3DloginPage%26ig_mid%3D129B8C52-B566-458E-B2E8-93863A15D688%26utm_content%3Dlo%26utm_medium%3Dbadge"
+                  ><img src="googleplay.png" alt="" class="img img-fluid py-2"
+                /></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="text-center mb-5">
+          Don't have an account?
+          <a href="">Register</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

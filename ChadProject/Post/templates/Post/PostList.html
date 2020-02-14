@@ -23,14 +23,14 @@
                       </p>
                     </div>
                     <div class="ui image">
-                      <a href="">
+                      <a href="{{post.owner.get_absolute_url}}">
                         <img
                           class="ui avatar massive image"
                           src="{{post.owner.profile_picture.url}}"
                           alt="{{post.owner.username}}"
                         />
                       </a>
-                      <a href="" class="ui big header">{{post.owner.username}}</a>
+                      <a href="{{post.owner.get_absolute_url}}" class="ui big header">{{post.owner.username}}</a>
                     </div>
                   </div>
                 </div>
@@ -48,7 +48,9 @@
                 <div class="content">
                   <p class="ui small header mb-3">{{post.liked_by.count}} likes</p>
                   <div class="description">
-                    <strong>{{post.owner.username}}</strong>
+                    <a href="{{post.owner.get_absolute_url}}">
+                      <strong>{{post.owner.username}}</strong>
+                    </a>
                     {{post.captions}}
                   </div>
                 </div>
@@ -66,7 +68,9 @@
                   {% for comment in post.comments.all  %}
                      <!-- Individual Comment -->
                      <div class="description mb-3">
-                      <strong>{{comment.owner.username}}</strong>
+                       <a href="{{comment.owner.get_absolute_url}}">
+                         <strong>{{comment.owner.username}}</strong>
+                      </a>
                       {{comment.comment}}
                     </div>
                   {% endfor %}

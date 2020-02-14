@@ -1,9 +1,93 @@
 {% extends "base.html" %}
+{% load humanize %}
 
-{% block title %}Username{% endblock title %}
+{% block title %}{{user.username}}{% endblock title %}
 
 {% block content %}
-  <div class="col-md-8 text-center mt-5">
-    <p class="lead">This is Profile Page</p>
-  </div>
+    <!-- USER INFO -->
+    <section class="mt-5">
+      <div class="ui container">
+        <div class="ui grid">
+          <!-- PROFILE PICTURE -->
+          <div class="six wide column mt-5 py-3">
+            <img
+              class="ui middle aligned tiny image border"
+              src="{{user.profile_picture.url}}"
+              alt="{{user.username}}"
+              id="profile-picture"
+            />
+          </div>
+          <!-- USER DESCRIPTION -->
+          <div class="ten wide column mt-5">
+            <div class="ui grid mb-1">
+              <div class="nine wide column">
+                <!-- USERNAME AND FOLLOW BUTTON -->
+                <div class="ui grid">
+                  <div class="six wide column">
+                    <h3 class="text-muted">{{user.username}}</h3>
+                  </div>
+                  <div class="ten wide column mr-auto">
+                    <button class="ui button small primary" id="follow-profile">
+                      <i class="user icon"></i>
+                      Follow
+                    </button>
+                  </div>
+                </div>
+
+                <!-- POST, FOLLOWERS, FOLLOWING -->
+                <div class="ui grid">
+                  <div class="five wide column">
+                    <strong class="ui small header mr-1">{{user.posts.count|intword}} </strong>
+                    <span class="ui small header text-muted">Post{{user.posts.count|pluralize}}</span>
+                  </div>
+                  <div class="five wide column">
+                    <strong class="ui small header mr-1">{{user.followers.count|intword}}</strong>
+                    <span class="ui small header text-muted">Follower{{user.followers.count|pluralize}}</span>
+                  </div>
+                  <div class="five wide column">
+                    <strong class="ui small header mr-1">{{user.followings.count|intword}}</strong>
+                    <span class="ui small header text-muted">Following{{user.followings.count|pluralize}}</span>
+                  </div>
+                </div>
+
+                <!-- FULL NAME AND BIO -->
+                <div class="ui small header">{{user.username}}</div>
+                <p class="text-justify">
+                  {{user.bio}}
+                </p>
+              </div>
+              <div class="seven wide column"></div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <!-- GALLERY -->
+        <div class="ui grid">
+          <div class="thirteen wide column mx-auto">
+            <div class="ui grid">
+              {% if owned_posts %}
+                {% for post in owned_posts  %}
+                  
+                  <div class="five wide column mb-2">
+                    <a href="{{post.get_absolute_url}}">
+                      <img
+                        src="{{post.photo.url}}"
+                        alt=""
+                        class="ui image fluid"
+                        id="photo-feed"
+                      />
+                    </a>
+                  </div>
+
+                {% endfor %}
+
+              {% else %}
+                <p class="text-lead">This User hasn't posted anything yet. Stay tune!</p>
+              {% endif %}
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 {% endblock content %}

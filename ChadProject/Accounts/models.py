@@ -64,8 +64,8 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     # Default fields
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100, blank=True)
+    last_name = models.CharField(max_length=100, blank=True)
     username = models.CharField(max_length=255, unique=True)
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=True)
@@ -73,7 +73,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_admin = models.BooleanField(default=False)
 
     # Additional fields
-    gender = models.CharField(choices=GENDER, max_length=50)
+    gender = models.CharField(choices=GENDER, max_length=50, default='X', blank=True)
     phone_number = PhoneNumberField(blank=True)
     bio = models.CharField(max_length=322, blank=True)
     followers = models.ManyToManyField(

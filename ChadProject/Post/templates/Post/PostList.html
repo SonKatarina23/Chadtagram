@@ -104,12 +104,31 @@
           {% else %}
             <p class="text-lead">There is no post to show</p>
           {% endif %}
-          
-          
         </section>
       </div>
     </div>
   </div>
-  <div class="five wide column" id="right-side"></div>
+  <div class="five wide column" id="right-side">
+    <!-- IDENTITY -->
+    <section id="identity">
+      <div class="ui segment mt-5">
+        <div class="ui items">
+          <div class="item">
+            <a href="{{user.get_absolute_url}}" class="ui mini circular image">
+              <img src="{{user.profile_picture.url}}" alt="{{user.username}}" />
+            </a>
+            <div class="content">
+              <a href="{{user.get_absolute_url}}" class="">
+                <strong>{{user.first_name}} {{user.last_name}}</strong>
+              </a>
+              <div class="description">
+                <p class="ui meta tiny">{{user}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </div>
 {% endblock content %}

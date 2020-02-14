@@ -31,7 +31,8 @@ class Register(View) :
     password1 = request.POST['password1']
     password2 = request.POST['password2']
 
-    # MANUAL VALIDATIONS
+    # No Automatic Forms = No Automated Validations either
+    # Manual Validations below
     if username == "" or email == "" or password1 == "" or password2 == "" :
       messages.error(request, 'You need to fill in all fields')
       return redirect('Accounts:Register')

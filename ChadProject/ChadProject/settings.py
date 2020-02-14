@@ -104,6 +104,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_REDIRECT_URL = 'Post:List'
+LOGIN_URL = 'Accounts:Login'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

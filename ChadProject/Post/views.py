@@ -1,8 +1,9 @@
 from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView
 from . models import Post, Comment
 
-class PostList(ListView) :
+class PostList(LoginRequiredMixin,ListView) :
   model = Post
   template_name = 'Post/PostList.html'
   context_object_name = 'post_list'
@@ -12,7 +13,7 @@ class PostList(ListView) :
   
   
 
-class PostDetail(DetailView) :
+class PostDetail(LoginRequiredMixin,DetailView) :
   model = Post
   template_name = 'Post/PostDetail.html'
   context_object_name = 'post'

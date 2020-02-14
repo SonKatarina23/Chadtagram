@@ -1,11 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View,DetailView
 from django.contrib import messages
 
 from . models import User
 from Post.models import Post
 
-class Profile(DetailView) :
+class Profile(LoginRequiredMixin,DetailView) :
   model = User
   template_name = 'Accounts/Profile.html'
   context_object_name = 'user'

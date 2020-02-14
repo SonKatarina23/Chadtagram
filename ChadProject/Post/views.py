@@ -1,5 +1,11 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.views.generic import ListView, DetailView
+from . models import Post, Comment
 
-def home(request) :
-  return render(request, 'Post/PostList.html')
+class PostList(ListView) :
+  model = Post
+  template_name = 'Post/PostList.html'
+  context_object_name = 'post_list'
+
+  
+  

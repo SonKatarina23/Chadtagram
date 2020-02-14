@@ -1,12 +1,102 @@
-{% extends "base.html" %}
+{% extends "base.html" %} 
 
-{% block title %}Chadtagram{% endblock title %}
-
+{% block title %}Chadtagram{% endblock title %} 
 
 {% block content %}
-<div class="col-md-8 text-center mt-5">
-  <p class="lead">This is Post List or also known as Home Page</p>
+<div class="ui container">
+  <div class="ui grid">
+    <div class="eleven wide column">
+      <div id="scroll">
+        <!-- POST LIST -->
+        <section id="post-list">
+          <!-- SAMPLE POST 1 -->
+          {% if post_list %}
+            {% for post in post_list %}
+            <section id="single-post">
+              <div class="ui centered card fluid mt-5" id="single-post">
+                <!-- POST HEADING -->
+                <div class="item my-3 ml-3">
+                  <div class="content">
+                    <div class="right floated">
+                      <p class="ui large meta header mr-3 mt-3">
+                        {{post.created_at|timesince}} ago
+                      </p>
+                    </div>
+                    <div class="ui image">
+                      <a href="">
+                        <img
+                          class="ui avatar massive image"
+                          src="{{post.owner.profile_picture.url}}"
+                          alt="{{post.owner.username}}"
+                        />
+                      </a>
+                      <a href="" class="ui big header">{{post.owner.username}}</a>
+                    </div>
+                  </div>
+                </div>
+  
+                <!-- POST IMAGE -->
+                <div class="image">
+                  <img src="{{post.photo.url}}" class="ui big image" alt="" />
+                </div>
+  
+                <!-- LIKE, COMMENT, CAPTIONS -->
+                <div class="content">
+                  <i class="heart outline like big icon mr-3"></i>
+                  <i class="comment outline like big icon"></i>
+                </div>
+                <div class="content">
+                  <p class="ui small header mb-3">{{post.liked_by.count}} likes</p>
+                  <div class="description">
+                    <strong>{{post.owner.username}}</strong>
+                    {{post.captions}}
+                  </div>
+                </div>
+  
+                <!-- COMMENTS -->
+                {% if post.comments %}
+                  <div class="extra content">
+                    <!-- Comment Count -->
+                    <div class="mb-3">
+                      <a href="" class="ui tiny">
+                        View {{post.comments.count}} comment{{post.comments.count|pluralize}}
+                      </a>
+                    </div>
+                  </div>
+                  {% for comment in post.comments.all  %}
+                     <!-- Individual Comment -->
+                     <div class="description mb-3">
+                      <strong>{{comment.owner.username}}</strong>
+                      {{comment.comment}}
+                    </div>
+                  {% endfor %}
+                {% endif %}
+                
+  
+                <!-- ADD COMMENT -->
+                <div class="extra content">
+                  <div class="ui medium form mb-4">
+                    <div class="ui fluid transparent action input">
+                      <input type="text" placeholder="Add Comment..." />
+                      <a href="" class="ui tiny ml-3 meta">Post</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="ui huge horizontal divider header"></div>
+            </section>
+
+            {% endfor %}
+
+          {% else %}
+            <p class="text-lead">There is no post to show</p>
+          {% endif %}
+          
+          
+        </section>
+      </div>
+    </div>
+  </div>
+  <div class="five wide column" id="right-side"></div>
 </div>
 {% endblock content %}
-  
-  

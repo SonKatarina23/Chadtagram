@@ -22,6 +22,8 @@ class Post(models.Model):
     def __str__(self):
         return f'Post [{self.id}]'
 
+    
+
 
 class Comment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)

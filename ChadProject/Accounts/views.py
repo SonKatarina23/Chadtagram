@@ -2,4 +2,4 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 def profile(request) :
-  return HttpResponse('This is Profile Page')
+  return render(request, 'Accounts/Profile.html')

@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- SEMANTIC UI -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha256-9mbkOfVho3ZPXfM7W8sV2SndrGDuh7wuyLjtsWeTI1Q=" crossorigin="anonymous" />
+
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    <!-- DYNAMIC PAGE TITLE -->
+    <title>{% block title %} {% endblock title %}</title>
+  </head>
+  <body>
+    {% include "partials/_navbar.html" %}
+    {% block content %}{% endblock content %}
+    <!-- {% include "partials/_dependencies.html" %} -->
+      
+  </body>
+</html>

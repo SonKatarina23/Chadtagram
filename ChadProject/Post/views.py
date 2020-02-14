@@ -7,5 +7,8 @@ class PostList(ListView) :
   template_name = 'Post/PostList.html'
   context_object_name = 'post_list'
 
-  
+class PostDetail(DetailView) :
+  model = Post
+  template_name = 'Post/PostDetail.html'
+  context_object_name = 'post'
   

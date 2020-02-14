@@ -1,4 +1,6 @@
 from django.db import models
+from django.shortcuts import reverse
+
 from Accounts.models import User
 from uuid import uuid4
 
@@ -22,6 +24,8 @@ class Post(models.Model):
     def __str__(self):
         return f'Post [{self.id}]'
 
+    def get_absolute_url(self):
+        return reverse("Post:Detail", kwargs={"pk": self.pk})
     
 
 

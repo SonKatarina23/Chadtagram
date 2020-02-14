@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Chadtagram{% endblock title %}
+
+
+{% block content %}
+  <div class="ui container">
+    <div class="ui grid">
+      <div class="ten wide column" id="left-side">
+        <!-- PHOTO ITSELF -->
+        <div class="ui fluid image my-5">
+          <img src="{{post.photo.url}}" alt="" />
+        </div>
+      </div>
+
+      <div class="six wide column">
+        <div id="post-info">
+          <!-- USER, CAPTIONS, COMMENTS -->
+          <div class="ui segment mt-5">
+            <div class="mr-auto">
+              <!-- USER -->
+              <section class="mb-3">
+                <img 
+                  class="ui avatar image" 
+                  src="{{post.owner.profile_picture.url}}" 
+                  alt="{{post.owner.username}}"
+                />
+                <span class="mr-3"><strong>{{post.owner.username}}</strong></span>
+                <button class="ui button mini primary">
+                  <i class="user icon"></i>
+                  Follow
+                </button>
+                <!-- USE THIS TO UNFOLLOW -->
+                <!-- <button class="ui button mini negative">
+                <i class="minus circle icon"></i>
+                Unfollow
+              </button> -->
+              </section>
+
+              <div id="scroll" class="mx-auto">
+                <!-- CAPTIONS -->
+                <section class="mt-3 mb-3">
+                  {{post.captions}}
+                </section>
+
+                <!-- COMMENTS -->
+                <section>
+                  {% if post.comments %}
+                      <!-- Sample Comment -->
+                    <div class="ui comments">
+                      <h3 class="ui dividing header"></h3>
+                      {% for comment in post.comments.all %}
+
+                        <div class="comment mb-4">
+                          <a class="avatar">
+                            <img src="{{comment.owner.profile_picture.url}}" />
+                          </a>
+                          <div class="content">
+                            <a class="author">{{comment.owner.username}}</a>
+                            <div class="metadata">
+                              <!-- <span class="date">Today at 5:42PM</span> -->
+                              <span class="date">{{comment.created_at}}</span>
+                            </div>
+                            <div class="text">
+                              {{comment.comment}}
+                            </div>
+                          </div>
+                        </div>
+
+                      {% endfor %}
+                    </div>
+
+                  {% else %}
+                    <p class="lead">There is no comment available for this post</p>
+                  {% endif %}
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+  
+  

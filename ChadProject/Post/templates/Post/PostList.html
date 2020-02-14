@@ -61,10 +61,16 @@
                     <!-- Comment Count -->
                     <div class="mb-3">
                       <a href="{{post.get_absolute_url}}" class="ui tiny">
-                        View {{post.comments.count}} comment{{post.comments.count|pluralize}}
+                        {% if post.comments.count > 0 %}
+                          View {{post.comments.count}} comment{{post.comments.count|pluralize}}
+                        {% else %}
+                          View Post Detail            
+                        {% endif %}                      
                       </a>
                     </div>
                   </div>
+                  
+                  
                   {% for comment in post.comments.all  %}
                      <!-- Individual Comment -->
                      <div class="description mb-3">
@@ -75,8 +81,8 @@
                     </div>
                   {% endfor %}
                 {% endif %}
+
                 
-  
                 <!-- ADD COMMENT -->
                 <div class="extra content">
                   <div class="ui medium form mb-4">

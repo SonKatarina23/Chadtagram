@@ -3,15 +3,17 @@
 <section id="navbar">
   <div class="ui pointing fixed menu mb-5">
     <div class="container">
-      <a class="item">
+      <a class="item" href="{% url 'Post:List' %}"> 
         <i class="instagram icon big"></i>
       </a>
-      <img
+      <a href="{% url 'Post:List' %}">
+        <img
         src="{% static 'img/Chadtagram.png' %}"
         alt="Chad-Logo"
         class="ui small image"
       />
-
+      </a>
+      
       <div class="ml-auto my-auto">
         <div class="item center mr-5">
           <div class="ui transparent icon input">
@@ -23,10 +25,10 @@
         </div>
       </div>
       <div class="right menu">
-        <a class="item">
+        <a class="item" href="{% url 'Post:List' %}">
           <i class="heart outline big icon"></i>
         </a>
-        <a class="item">
+        <a class="item" href="{{user.get_absolute_url}}">
           <i class="user circle big icon"></i>
         </a>
         <a class="item">

@@ -1,7 +1,10 @@
+import json
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View,DetailView
 from django.contrib import messages
+from django.http import JsonResponse
 
 from . models import User
 from Post.models import Post
@@ -17,7 +20,7 @@ class Profile(LoginRequiredMixin,DetailView) :
 
   def get_context_data(self, **kwargs):
       context = super().get_context_data(**kwargs)
-      
+
       context["owned_posts"] = Post.objects.filter(owner_id = self.object.id).order_by('-created_at')
       context["is_own_profile"] = self.request.user == self.object
       context["is_following"] = self.request.user in self.object.followers.all()
@@ -65,5 +68,22 @@ class Register(View) :
             return redirect('Accounts:Login')
       
 
+def toggle_follow(request) :
+  if request.method == 'POST' :
+    username = json.loads(request.body)['username'] # This is a string passed in with axios
+    print(f'Username received : {username}')
+    profile_seen = User.objects.get(username=username)
+
+    if request.user in profile_seen.followers.all() : # Auth user is following this
+      profile_seen.followers.remove(request.user)
+      updated_is_following = False
+    else :
+      #profile_seen.followers.all().append(request.user)
+      print(profile_seen.followers.add(request.user))
+      updated_is_following = True
+
+    return JsonResponse({
+      'updated_is_following' : updated_is_following
+    })
 
 

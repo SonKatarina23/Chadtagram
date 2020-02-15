@@ -26,7 +26,7 @@
                   <div class="six wide column">
                     <h3 class="text-muted">{{user.username}}</h3>
                   </div>
-                  <div class="six wide column mr-auto">
+                  <div class="six wide column mr-auto" id="js-follow-btn">
                     {% if is_own_profile %}
                       <a 
                         href="{% url 'Accounts:Logout' %}" 
@@ -109,3 +109,51 @@
       </div>
     </section>
 {% endblock content %}
+
+{% block javascript %}
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+
+<script>
+  let btn = document.querySelector('#js-follow-btn')
+  let child = document.querySelector('#follow-profile')
+
+  btn.addEventListener('click', ()=> {
+    btn = document.querySelector('#js-follow-btn')
+    child = document.querySelector('#follow-profile')
+    
+    data = {
+      'username' : '{{user.username}}',
+    }
+    
+    toggleFollowing('http://127.0.0.1:8000/ajax/toggle-follow', JSON.stringify(data))
+  })
+
+  toggleFollowing = async (url, data) => {
+    const csrf = Cookies.get('csrftoken')
+    let config = {
+      headers : {
+        'Content-type' : 'application/json',
+        'X-CSRFToken' : csrf
+      }
+    }
+    const res = await axios.post(url, data, config)
+    const {updated_is_following} = res.data
+
+    const newBtn = document.createElement('button')
+    newBtn.className = `ui button small ${updated_is_following ? '' : 'primary'}`
+    newBtn.id = "follow-profile"
+
+    const newIcon = document.createElement('i')
+    newIcon.className = "user icon"
+
+    newBtn.appendChild(newIcon)
+    newBtn.textContent = updated_is_following ? 'Following' : 'Follow'
+
+    btn.replaceChild(newBtn, child)
+  }
+
+</script>
+
+{% endblock javascript %}

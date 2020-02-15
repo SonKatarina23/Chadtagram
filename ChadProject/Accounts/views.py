@@ -68,8 +68,9 @@ class Register(View) :
             return redirect('Accounts:Login')
       
 
-def toggle_follow(request) :
-  if request.method == 'POST' :
+
+class ToggleFollow(View) :
+  def post(self, request, *args, **kwargs) :
     username = json.loads(request.body)['username'] # This is a string passed in with axios
     print(f'Username received : {username}')
     profile_seen = User.objects.get(username=username)
@@ -78,12 +79,9 @@ def toggle_follow(request) :
       profile_seen.followers.remove(request.user)
       updated_is_following = False
     else :
-      #profile_seen.followers.all().append(request.user)
       print(profile_seen.followers.add(request.user))
       updated_is_following = True
 
     return JsonResponse({
       'updated_is_following' : updated_is_following
     })
-
-

@@ -147,9 +147,8 @@
 
     const newIcon = document.createElement('i')
     newIcon.className = "user icon"
-
     newBtn.appendChild(newIcon)
-    newBtn.textContent = updated_is_following ? 'Following' : 'Follow'
+    newBtn.appendChild(document.createTextNode(updated_is_following ? ' Following' : ' Follow'))
 
     btn.replaceChild(newBtn, child)
   }

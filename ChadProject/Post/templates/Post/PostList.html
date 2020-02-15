@@ -3,197 +3,185 @@
 {% block title %} Chadtagram {% endblock title %}
 
 {% block content %}
-<script>
-  let likeQS = []
-  let photoQS = []
-
-  
-</script>
-      <div class="ui container">
-      <div class="ui grid">
-        <div class="eleven wide column">
-          <div id="">
-            <!-- POST LIST -->
-            <section id="post-list">
-              
-              {% for post in post_list  %}
-                  <!-- SAMPLE POST 1 -->
-                  
-                  <section id="single-post">
-                    <div class="ui centered card fluid mt-5" id="single-post">
-                      <!-- POST HEADING -->
-                      <div class="item my-3 ml-3">
-                        <div class="content">
-                          <div class="right floated">
-                            <p class="ui large meta header mr-3 mt-3">
-                              {{post.created_at|timesince}}
-                            </p>
-                          </div>
-                          <div class="ui image">
-                            <a href="{{post.owner.get_absolute.url}}">
-                              <img
-                                class="ui avatar massive image"
-                                src="{{post.owner.profile_picture.url}}"
-                                alt="{{post.owner.username}}"
-                              />
-                            </a>
-                            <a 
-                              href="{{post.owner.get_absolute_url}}" 
-                              class="ui big header"
-                            >
-                              {{post.owner.username}}
-                            </a>
-                          </div>
+    <div class="ui container">
+    <div class="ui grid">
+      <div class="eleven wide column">
+        <div id="">
+          <!-- POST LIST -->
+          <section id="post-list">
+            
+            {% for post in post_list  %}
+                <!-- SAMPLE POST 1 -->
+                
+                <section id="single-post">
+                  <div class="ui centered card fluid mt-5" id="single-post">
+                    <!-- POST HEADING -->
+                    <div class="item my-3 ml-3">
+                      <div class="content">
+                        <div class="right floated">
+                          <p class="ui large meta header mr-3 mt-3">
+                            {{post.created_at|timesince}}
+                          </p>
                         </div>
-                      </div>
-
-                      <!-- POST IMAGE -->
-                      <div class="image">
-                        <img ondblclick="testfunction('{{post.id}}')" src="{{post.photo.url}}" class="ui big image"/>
-                      </div>
-
-                      <!-- LIKE, COMMENT, CAPTIONS -->
-                      <div class="content">
-                        {% if user in post.liked_by.all %}
-                          <i class="heart like big icon mr-3 red" id="post-{{post.id}}"></i>
-                          <script>
-                            likeQS.push(document.querySelector(`#post-${'{{post.id}}'}`))
-                          </script>
-                        {% else %}
-                          <i class="heart outline like big icon mr-3" id="post-{{post.id}}"></i>
-                          <script>
-                            likeQS.push(document.querySelector(`#post-${'{{post.id}}'}`))
-                          </script>
-                        {% endif %}   
-                        <i class="comment outline like big icon"></i>
-                      </div>
-                      <div class="content">
-                        <p class="ui small header mb-3">
-                          {{post.liked_by.count}} like{{post.liked_by.count|pluralize}}
-                        </p>
-                        <div class="description">
-                          <a href="{{post.owner.get_absolute_url}}">
-                            <strong>{{post.owner.username}}</strong>
+                        <div class="ui image">
+                          <a href="{{post.owner.get_absolute.url}}">
+                            <img
+                              class="ui avatar massive image"
+                              src="{{post.owner.profile_picture.url}}"
+                              alt="{{post.owner.username}}"
+                            />
                           </a>
-                          {{post.captions}}
+                          <a 
+                            href="{{post.owner.get_absolute_url}}" 
+                            class="ui big header"
+                          >
+                            {{post.owner.username}}
+                          </a>
                         </div>
                       </div>
+                    </div>
 
-                      <!-- COMMENTS -->
-                      <div class="extra content">
-                        
-                        {% if post.comments %}
-                           <!-- Comment Count -->
-                          <div class="mb-3">
-                            <a href="{{post.get_absolute_url}}" class="ui tiny">
-                              {% if post.commments.count > 0 %}
-                                View {{post.comments.count}} comment{{post.comments.count|pluralize}}
-                              {% else %}
-                                View Post
-                              {% endif %}
+                    <!-- POST IMAGE -->
+                    <div class="image">
+                      <img ondblclick="likePost('{{post.id}}')" src="{{post.photo.url}}" class="ui big image"/>
+                    </div>
+
+                    <!-- LIKE, COMMENT, CAPTIONS -->
+                    <div class="content">
+                      {% if user in post.liked_by.all %}
+                        <i class="heart like big icon mr-3 red" onclick="toggleLike('{{post.id}}')"></i>
+                      {% else %}
+                        <i class="heart outline like big icon mr-3" onclick="toggleLike('{{post.id}}')"></i>
+                      {% endif %}   
+                      <i class="comment outline like big icon"></i>
+                    </div>
+                    <div class="content">
+                      <p class="ui small header mb-3">
+                        {{post.liked_by.count}} like{{post.liked_by.count|pluralize}}
+                      </p>
+                      <div class="description">
+                        <a href="{{post.owner.get_absolute_url}}">
+                          <strong>{{post.owner.username}}</strong>
+                        </a>
+                        {{post.captions}}
+                      </div>
+                    </div>
+
+                    <!-- COMMENTS -->
+                    <div class="extra content">
+                      
+                      {% if post.comments %}
+                          <!-- Comment Count -->
+                        <div class="mb-3">
+                          <a href="{{post.get_absolute_url}}" class="ui tiny">
+                            {% if post.commments.count > 0 %}
+                              View {{post.comments.count}} comment{{post.comments.count|pluralize}}
+                            {% else %}
+                              View Post
+                            {% endif %}
+                          </a>
+                        </div>
+                      {% endif %}
+
+                      {% for comment in post.comments.all  %}
+                        {% if forloop.counter0 < 2 %}
+                          <!-- Individual Comment -->
+                          <div class="description mb-3">
+                            <a href="{{comment.owner.get_absolute_url}}">
+                              <strong>{{comment.owner.username}}</strong>
                             </a>
+                            {{comment.comment}}
                           </div>
                         {% endif %}
+                      {% endfor %}                        
+                    </div>
 
-                        {% for comment in post.comments.all  %}
-                          {% if forloop.counter0 < 2 %}
-                            <!-- Individual Comment -->
-                            <div class="description mb-3">
-                              <a href="{{comment.owner.get_absolute_url}}">
-                                <strong>{{comment.owner.username}}</strong>
-                              </a>
-                              {{comment.comment}}
-                            </div>
-                          {% endif %}
-                        {% endfor %}                        
-                      </div>
-
-                      <!-- ADD COMMENT -->
-                      <div class="extra content">
-                        <div class="ui medium form mb-4">
-                          <div class="ui fluid transparent action input">
-                            <input type="text" placeholder="Add Comment..." />
-                            <a href="" class="ui tiny ml-3 meta">Post</a>
-                          </div>
+                    <!-- ADD COMMENT -->
+                    <div class="extra content">
+                      <div class="ui medium form mb-4">
+                        <div class="ui fluid transparent action input">
+                          <input type="text" placeholder="Add Comment..." />
+                          <a href="" class="ui tiny ml-3 meta">Post</a>
                         </div>
                       </div>
                     </div>
-                    <div class="ui huge horizontal divider header"></div>
-                  </section>  
-              {% empty %}
-                <p class="lead">There is no post available</p>
-              {% endfor %}
-                
+                  </div>
+                  <div class="ui huge horizontal divider header"></div>
+                </section>  
+            {% empty %}
+              <p class="lead">There is no post available</p>
+            {% endfor %}
               
-            </section>
-          </div>
+            
+          </section>
         </div>
+      </div>
 
-        <div class="five wide column" id="right-side">
-          <div id="right-side">
-             <!-- IDENTITY -->
-            <section id="identity">
-              <div class="ui segment mt-5">
-                <div class="ui items">
-                  <div class="item">
-                    <a href="{{user.get_absolute_url}}" class="ui mini circular image">
-                      <img src="{{user.profile_picture.url}}" alt="{{user.username}}" />
+      <div class="five wide column" id="right-side">
+        <div id="right-side">
+            <!-- IDENTITY -->
+          <section id="identity">
+            <div class="ui segment mt-5">
+              <div class="ui items">
+                <div class="item">
+                  <a href="{{user.get_absolute_url}}" class="ui mini circular image">
+                    <img src="{{user.profile_picture.url}}" alt="{{user.username}}" />
+                  </a>
+                  <div class="content">
+                    <a href="{{user.get_absolute_url}}" class="">
+                      <strong>{{user.first_name}} {{user.last_name}}</strong>
                     </a>
-                    <div class="content">
-                      <a href="{{user.get_absolute_url}}" class="">
-                        <strong>{{user.first_name}} {{user.last_name}}</strong>
-                      </a>
-                      <div class="description">
-                        <p class="ui meta tiny">{{user}}</p>
-                      </div>
+                    <div class="description">
+                      <p class="ui meta tiny">{{user}}</p>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <!-- SUGGESTION -->
-            <div class="ui segment">
-              <div class="ui teal ribbon label">Suggestions For You</div>
-              <!-- SUGGESTION LIST -->
-              <div class="ui middle aligned divided list">
-                <!-- INDIVIDUAL SUGGESTION -->
-                <!-- Note : Make sure name aint too long, it'll break the markup otherwise -->
-                <div class="item">
-                  <div class="right floated content">
-                    <div class="ui button primary tiny">Follow</div>
-                  </div>
-                  <img class="ui avatar image" src="chaeyoung1.jpg" />
-                  <div class="content">
-                    Chaeyoung
-                  </div>
-                </div>
-    
-                <div class="item">
-                  <div class="right floated content">
-                    <div class="ui button primary tiny">Follow</div>
-                  </div>
-                  <img class="ui avatar image" src="carin.jpg" />
-                  <div class="content">
-                    Felita Carin
-                  </div>
-                </div>
-    
-                <div class="item">
-                  <div class="right floated content">
-                    <div class="ui button primary tiny">Follow</div>
-                  </div>
-                  <img class="ui avatar image" src="jerax.jpg" />
-                  <div class="content">
-                    Jesse Vainikka
                   </div>
                 </div>
               </div>
             </div>
-          </div>     
-        </div>
-      </div>    
-    </div>
+          </section>
+
+          <!-- SUGGESTION -->
+          <div class="ui segment">
+            <div class="ui teal ribbon label">Suggestions For You</div>
+            <!-- SUGGESTION LIST -->
+            <div class="ui middle aligned divided list">
+              <!-- INDIVIDUAL SUGGESTION -->
+              <!-- Note : Make sure name aint too long, it'll break the markup otherwise -->
+              <div class="item">
+                <div class="right floated content">
+                  <div class="ui button primary tiny">Follow</div>
+                </div>
+                <img class="ui avatar image" src="chaeyoung1.jpg" />
+                <div class="content">
+                  Chaeyoung
+                </div>
+              </div>
+  
+              <div class="item">
+                <div class="right floated content">
+                  <div class="ui button primary tiny">Follow</div>
+                </div>
+                <img class="ui avatar image" src="carin.jpg" />
+                <div class="content">
+                  Felita Carin
+                </div>
+              </div>
+  
+              <div class="item">
+                <div class="right floated content">
+                  <div class="ui button primary tiny">Follow</div>
+                </div>
+                <img class="ui avatar image" src="jerax.jpg" />
+                <div class="content">
+                  Jesse Vainikka
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>     
+      </div>
+    </div>    
+  </div>
 {% endblock content %}    
 
 
@@ -202,18 +190,12 @@
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
 
   <script>
-    console.log(likeQS)
-    for(let i = 0; i < likeQS.length; i++) {
-      likeQS[i].addEventListener('click',() => {
-        individualID = likeQS[i].id.substring(likeQS[i].id.indexOf('-')+1)
-        likePost(individualID)
-      })
+    likePost = id => {
+      console.log(`Liking post with double click, id : ${id}`)
     }
 
-    testfunction = id => console.log(`WKWKWK ${id}`)
-
-    likePost = postID => {
-      console.log(postID)
+    toggleLike = id => {
+      console.log(`Toggling post with click on icon, id : ${id}`)
     }
   </script>
 {% endblock javascript %}

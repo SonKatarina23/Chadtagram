@@ -3,6 +3,9 @@
 {% block title %} Chadtagram {% endblock title %}
 
 {% block content %}
+<script>
+  let test = []
+</script>
       <div class="ui container">
       <div class="ui grid">
         <div class="eleven wide column">
@@ -12,6 +15,7 @@
               
               {% for post in post_list  %}
                   <!-- SAMPLE POST 1 -->
+                  
                   <section id="single-post">
                     <div class="ui centered card fluid mt-5" id="single-post">
                       <!-- POST HEADING -->
@@ -48,9 +52,15 @@
                       <!-- LIKE, COMMENT, CAPTIONS -->
                       <div class="content">
                         {% if user in post.liked_by.all %}
-                          <i class="heart like big icon mr-3 red"></i>
+                          <i class="heart like big icon mr-3 red" id="post-{{post.id}}"></i>
+                          <script>
+                            test.push(document.querySelector(`#post-${'{{post.id}}'}`))
+                          </script>
                         {% else %}
-                          <i class="heart outline like big icon mr-3"></i>
+                          <i class="heart outline like big icon mr-3" id="post-{{post.id}}"></i>
+                          <script>
+                            test.push(document.querySelector(`#post-${'{{post.id}}'}`))
+                          </script>
                         {% endif %}   
                         <i class="comment outline like big icon"></i>
                       </div>
@@ -189,7 +199,17 @@
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
 
   <script>
-    
+    console.log(test)
+    for(let i = 0; i < test.length; i++) {
+      test[i].addEventListener('click',() => {
+        individualID = test[i].id.substring(test[i].id.indexOf('-')+1)
+        likePost(individualID)
+      })
+    }
+
+    likePost = postID => {
+      console.log(postID)
+    }
   </script>
 {% endblock javascript %}
   

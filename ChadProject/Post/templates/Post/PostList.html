@@ -4,7 +4,10 @@
 
 {% block content %}
 <script>
-  let test = []
+  let likeQS = []
+  let photoQS = []
+
+  
 </script>
       <div class="ui container">
       <div class="ui grid">
@@ -45,8 +48,8 @@
                       </div>
 
                       <!-- POST IMAGE -->
-                      <div class="image" id="{{post.id}}">
-                        <img src="{{post.photo.url}}" class="ui big image" alt="" />
+                      <div class="image">
+                        <img ondblclick="testfunction('{{post.id}}')" src="{{post.photo.url}}" class="ui big image"/>
                       </div>
 
                       <!-- LIKE, COMMENT, CAPTIONS -->
@@ -54,12 +57,12 @@
                         {% if user in post.liked_by.all %}
                           <i class="heart like big icon mr-3 red" id="post-{{post.id}}"></i>
                           <script>
-                            test.push(document.querySelector(`#post-${'{{post.id}}'}`))
+                            likeQS.push(document.querySelector(`#post-${'{{post.id}}'}`))
                           </script>
                         {% else %}
                           <i class="heart outline like big icon mr-3" id="post-{{post.id}}"></i>
                           <script>
-                            test.push(document.querySelector(`#post-${'{{post.id}}'}`))
+                            likeQS.push(document.querySelector(`#post-${'{{post.id}}'}`))
                           </script>
                         {% endif %}   
                         <i class="comment outline like big icon"></i>
@@ -199,13 +202,15 @@
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
 
   <script>
-    console.log(test)
-    for(let i = 0; i < test.length; i++) {
-      test[i].addEventListener('click',() => {
-        individualID = test[i].id.substring(test[i].id.indexOf('-')+1)
+    console.log(likeQS)
+    for(let i = 0; i < likeQS.length; i++) {
+      likeQS[i].addEventListener('click',() => {
+        individualID = likeQS[i].id.substring(likeQS[i].id.indexOf('-')+1)
         likePost(individualID)
       })
     }
+
+    testfunction = id => console.log(`WKWKWK ${id}`)
 
     likePost = postID => {
       console.log(postID)

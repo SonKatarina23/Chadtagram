@@ -17,8 +17,10 @@ class Profile(LoginRequiredMixin,DetailView) :
 
   def get_context_data(self, **kwargs):
       context = super().get_context_data(**kwargs)
-      owned_posts = Post.objects.filter(owner_id = self.object.id).order_by('-created_at')
-      context["owned_posts"] = owned_posts 
+      
+      context["owned_posts"] = Post.objects.filter(owner_id = self.object.id).order_by('-created_at')
+      context["is_own_profile"] = self.request.user == self.object
+      context["is_following"] = self.request.user in self.object.followers.all()
       return context
 
 

@@ -6,7 +6,6 @@ from . models import Post, Comment
 class PostList(LoginRequiredMixin,ListView) :
   model = Post
   template_name = 'Post/PostList.html'
-  # template_name = 'test.html'
   context_object_name = 'post_list'
 
   def get_queryset(self):

@@ -33,15 +33,30 @@
                     <strong>{{post.owner.username}}</strong>
                   </a>
                 </span>
-                <button class="ui button mini primary">
-                  <i class="user icon"></i>
-                  Follow
-                </button>
-                <!-- USE THIS TO UNFOLLOW -->
-                <!-- <button class="ui button mini negative">
-                <i class="minus circle icon"></i>
-                Unfollow
-              </button> -->
+                
+                {% if not is_own %}
+                  {% if is_following %}
+                    <!-- USE THIS TO UNFOLLOW -->
+                    <button 
+                      class="ui mini button" 
+                      id="follow-btn-{{post.owner.id}}"
+                      onclick="toggleFollowing('{{post.owner.id}}')"
+                    >
+                      <i class="user icon"></i>
+                      Following
+                    </button>
+                  {% else %}
+                      <button 
+                        class="ui button mini primary"
+                        id="follow-btn-{{post.owner.id}}"
+                        onclick="toggleFollowing('{{post.owner.id}}')"
+                      >
+                        <i class="user icon"></i>
+                        Follow
+                    </button>
+                  {% endif %}       
+                {% endif %}
+                    
               </section>
 
               <div id="scroll" class="mx-auto">
@@ -92,4 +107,48 @@
   </div>
 {% endblock content %}
   
-  
+{% block javascript %}
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+
+  <script>
+    let followBtn, newIcon
+
+    toggleFollowing = async id => {
+      const data = {
+        'userID' : id
+      }
+      const url = 'http://127.0.0.1:8000/ajax/toggle-follow'
+      const config = axiosConfig()
+
+      const res = await axios.post(url, JSON.stringify(data), config)
+      const { updated_is_following } = res.data
+
+      // DOM Manipulation part
+      followBtn = document.querySelector(`#follow-btn-${id}`)
+      followBtn.className = `ui mini button ${updated_is_following ? '' : 'primary'}`
+      clearChild(followBtn)
+      newIcon = document.createElement('i')
+      newIcon.className = 'user icon'
+      followBtn.appendChild(newIcon)
+      followBtn.appendChild(document.createTextNode(`${updated_is_following ? 'Following' : 'Follow'}`))
+
+    }
+
+    axiosConfig = () => {
+      const csrf = Cookies.get('csrftoken')
+      let config = {
+        headers : {
+          'Content-type' : 'application/json',
+          'X-CSRFToken' : csrf
+        }
+      }
+      return config
+    }
+
+    clearChild = node => {
+      while(node.firstChild) node.removeChild(node.firstChild)
+    }
+
+  </script>
+{% endblock javascript %}

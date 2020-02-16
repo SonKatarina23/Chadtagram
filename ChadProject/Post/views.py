@@ -22,8 +22,19 @@ class PostDetail(LoginRequiredMixin,DetailView) :
 
   def get_context_data(self, **kwargs):
       context = super().get_context_data(**kwargs)
+
+      # Retriving comments
       comments = Comment.objects.filter(post=self.object).order_by('-created_at')
       context["comments"] = comments
+
+      # Check if this post is his/her own post
+      is_own = self.object.owner == self.request.user
+      context["is_own"] = is_own
+
+      # Check if this post'sowner is followed by current user
+      is_following = self.request.user in self.object.owner.followers.all()
+      context["is_following"] = is_following
+
       return context
   
 

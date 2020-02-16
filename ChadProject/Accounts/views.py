@@ -71,16 +71,19 @@ class Register(View) :
 
 class ToggleFollow(View) :
   def post(self, request, *args, **kwargs) :
-    username = json.loads(request.body)['username'] # This is a string passed in with axios
-    profile_seen = User.objects.get(username=username)
+    userID = json.loads(request.body)['userID'] # This is a string passed in with axios
+    profile_seen = User.objects.get(id=userID)
 
     if request.user in profile_seen.followers.all() : # Auth user is following this
+      updated_followers_count = len(profile_seen.followers.all()) - 1
       profile_seen.followers.remove(request.user)
       updated_is_following = False
     else :
+      updated_followers_count = len(profile_seen.followers.all()) + 1
       profile_seen.followers.add(request.user)
       updated_is_following = True
 
     return JsonResponse({
-      'updated_is_following' : updated_is_following
+      'updated_is_following' : updated_is_following,
+      'updated_followers_count' : updated_followers_count
     })

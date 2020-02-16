@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load humanize %}
+{% load static %}
 
 {% block title %}{{user.username}}{% endblock title %}
 
@@ -28,14 +29,27 @@
                   </div>
                   <div class="six wide column mr-auto">
                     {% if is_own_profile %}
-                      <a 
-                        href="{% url 'Accounts:Logout' %}" 
-                        class="ui button small" 
-                        id="follow-profile"
-                      >
-                        <i class="user icon"></i>
-                        Logout
-                      </a>
+                    <div class="ui simple dropdown icon">
+                      <i class="cog icon large"></i>
+                      <div class="menu">
+                        <div class="item">
+                          <a 
+                          href="{% url 'Accounts:Logout' %}" 
+                          id="follow-profile"
+                          >
+                            <i class="user icon large"></i>
+                            Logout
+                          </a>
+                        </div>
+                        <div class="item">
+                          <a href="">
+                            <i class="cog icon large"></i>
+                            Edit Profile
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+
                     {% else %}
                       {% if is_following %}
                         <button 
@@ -101,6 +115,21 @@
         <div class="ui grid">
           <div class="thirteen wide column mx-auto">
             <div class="ui grid">
+              
+              {% if is_own_profile %}
+                <div class="five wide column mb-2 my-auto">
+                  <a href="{{post.get_absolute_url}}">
+                    <div class="m-auto">
+                      <img
+                        src="{% static 'img/CameraIcon.png' %}"
+                        alt=""
+                        class="ui image m-auto Medium"
+                    />
+                    </div>
+                  </a>
+                </div>
+              {% endif %}
+                
               {% if owned_posts %}
                 {% for post in owned_posts  %}
                   
@@ -118,7 +147,9 @@
                 {% endfor %}
 
               {% else %}
-                <p class="text-lead">This User hasn't posted anything yet. Stay tune!</p>
+                {% if not is_own_profile %}
+                  <p class="text-lead mt-5">This User hasn't posted anything yet. Stay tune!</p>
+                {% endif %}
               {% endif %}
 
             </div>

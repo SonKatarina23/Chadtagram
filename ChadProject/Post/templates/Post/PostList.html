@@ -48,7 +48,7 @@
                         src="{{post.photo.url}}" 
                         class="ui big image"
                       />
-                      <h2 class="ui icon header">
+                      <h2 class="ui icon header" id="love-mid-{{post.id}}" style="display: none;">
                         <i 
                           class="heart massive icon"
                           id="love-image"
@@ -209,7 +209,7 @@
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
 
   <script>
-    let likeIcon, likeCount;
+    let likeIcon, likeCount, loveMid;
 
     console.log(document.querySelector('#love-image'))
 
@@ -217,9 +217,15 @@
       const data = {
         'postID' : id
       }
+
+
       const url = 'http://127.0.0.1:8000/ajax/like-post'
       const config = axiosConfig()
       const res = await axios.post(url, JSON.stringify(data), config)
+
+      loveMid = document.querySelector(`#love-mid-${id}`)
+      loveMid.style.display = 'block'
+      setTimeout(() => loveMid.style.display = 'none', 750)
       
       const { updated_like_count } = res.data
       likeIcon = document.querySelector(`#like-icon-${id}`)

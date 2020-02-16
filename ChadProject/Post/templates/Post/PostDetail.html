@@ -52,11 +52,12 @@
 
                 <!-- COMMENTS -->
                 <section>
-                  {% if post.comments %}
+
+                  {% if comments %}
                       <!-- Sample Comment -->
                     <div class="ui comments">
                       <h3 class="ui dividing header"></h3>
-                      {% for comment in post.comments.all %}
+                      {% for comment in comments %}
 
                         <div class="comment mb-4">
                           <a href="{{comment.owner.get_absolute_url}}" class="avatar">
@@ -78,12 +79,8 @@
                             </div>
                           </div>
                         </div>
-
                       {% endfor %}
                     </div>
-
-                  {% else %}
-                    <p class="lead">There is no comment available for this post</p>
                   {% endif %}
                 </section>
               </div>

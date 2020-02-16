@@ -49,14 +49,22 @@
                     <!-- LIKE, COMMENT, CAPTIONS -->
                     <div class="content">
                       {% if user in post.liked_by.all %}
-                        <i class="heart like big icon mr-3 red" onclick="toggleLike('{{post.id}}')"></i>
+                        <i 
+                          class="heart like big icon mr-3 red"
+                          id="like-icon-{{post.id}}" 
+                          onclick="toggleLike('{{post.id}}')">
+                        </i>
                       {% else %}
-                        <i class="heart outline like big icon mr-3" onclick="toggleLike('{{post.id}}')"></i>
+                        <i 
+                          class="heart outline like big icon mr-3"
+                          id="like-icon-{{post.id}}"  
+                          onclick="toggleLike('{{post.id}}')">
+                        </i>
                       {% endif %}   
                       <i class="comment outline like big icon"></i>
                     </div>
                     <div class="content">
-                      <p class="ui small header mb-3">
+                      <p class="ui small header mb-3" id="like-count-{{post.id}}">
                         {{post.liked_by.count}} like{{post.liked_by.count|pluralize}}
                       </p>
                       <div class="description">
@@ -190,13 +198,43 @@
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
 
   <script>
+    let likeIcon, likeCount;
+
     likePost = id => {
       console.log(`Liking post with double click, id : ${id}`)
     }
 
-    toggleLike = id => {
+    toggleLike = async id => {
       console.log(`Toggling post with click on icon, id : ${id}`)
+      const data = {
+        'postID' : id
+      }
+      const url = 'http://127.0.0.1:8000/ajax/toggle-like'
+      const config = axiosConfig()
+      const res = await axios.post(url, JSON.stringify(data), config)
+
+      const { updated_is_liking, updated_like_count } = res.data
+      likeIcon = document.querySelector(`#like-icon-${id}`)
+      likeIcon.className = updated_is_liking 
+        ? '"heart like big icon mr-3 red' 
+        : 'heart outline like big icon mr-3'
+
+      likeCount = document.querySelector(`#like-count-${id}`)
+      likeCount.innerText = `${updated_like_count} ${updated_like_count > 1 ? 'likes' : 'like'}`
+      
     }
+
+    axiosConfig = () => {
+      const csrf = Cookies.get('csrftoken')
+      let config = {
+        headers : {
+          'Content-type' : 'application/json',
+          'X-CSRFToken' : csrf
+        }
+      }
+      return config
+    }
+
   </script>
 {% endblock javascript %}
   

@@ -6,7 +6,7 @@ app_name = 'Accounts'
 
 urlpatterns = [
     # Ajax with Vanilla JS
-    path('ajax/toggle-follow', views.ToggleFollow.as_view(), name='toggle_follow'),
+    path('ajax/toggle-follow', views.ToggleFollow.as_view(), name='Toggle_Follow'),
 
     # Auth stuff
     path('register/', views.Register.as_view(), name='Register'),

@@ -79,7 +79,7 @@ class ToggleFollow(View) :
       profile_seen.followers.remove(request.user)
       updated_is_following = False
     else :
-      print(profile_seen.followers.add(request.user))
+      profile_seen.followers.add(request.user)
       updated_is_following = True
 
     return JsonResponse({

@@ -43,7 +43,18 @@
 
                     <!-- POST IMAGE -->
                     <div class="image">
-                      <img ondblclick="likePost('{{post.id}}')" src="{{post.photo.url}}" class="ui big image"/>
+                      <img 
+                        ondblclick="likePost('{{post.id}}')" 
+                        src="{{post.photo.url}}" 
+                        class="ui big image"
+                      />
+                      <h2 class="ui icon header">
+                        <i 
+                          class="heart massive icon"
+                          id="love-image"
+                        ></i>
+                      </h2>
+                     
                     </div>
 
                     <!-- LIKE, COMMENT, CAPTIONS -->
@@ -199,6 +210,8 @@
 
   <script>
     let likeIcon, likeCount;
+
+    console.log(document.querySelector('#love-image'))
 
     likePost = async id => {
       const data = {

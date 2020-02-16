@@ -2,6 +2,16 @@ a {
   text-decoration: none !important;
 }
 
+#love-image{
+  left: 50% !important;
+  top: 50% !important;
+  position: absolute !important;
+  margin-top: -25px !important;
+  margin-left: -25px !important;
+  color: red !important;
+  opacity: 0.7 !important;
+}
+
 #right-side {
   position: fixed;
   top: 3.5em;
@@ -32,6 +42,8 @@ a {
   margin-left: 150px !important;
 }
 
+
+
 #follow-profile {
   width: 120px;
 }
@@ -40,16 +52,4 @@ a {
   width: 250px !important;
   height: 250px !important;
   border: 0.25px groove black;
-}
-
-.test {
-  background-color: red;
-}
-
-.test2 {
-  background-color: blue;
-}
-
-.test3 {
-  background-color: aqua;
 }

@@ -89,8 +89,19 @@
                               <!-- <span class="date">Today at 5:42PM</span> -->
                               <span class="date">{{comment.created_at|naturalday|capfirst }}</span>
                               {% if comment.owner == request.user or comment.post.owner == request.user %}
-                                <a href="">
-                                  <i class="x icon red large"></i>
+                                <form 
+                                  action="{% url 'Post:Delete_Comment' pk=comment.id %}" 
+                                  method='POST'
+                                  id="delete-comment-{{comment.id}}"
+                                >
+                                  {% csrf_token %}
+                                </form>
+                                <a>
+                                  <i 
+                                    class="x icon red large" 
+                                    onclick="deleteComment('{{comment.id}}')"
+                                    style="cursor:pointer"
+                                  ></i>
                                 </a>
                               {% endif %}
                               
@@ -136,7 +147,12 @@
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
 
   <script>
-    let followBtn, newIcon
+    let followBtn, newIcon, formDeleteComment
+
+    deleteComment = id => {
+      formDeleteComment = document.querySelector(`#delete-comment-${id}`)
+      formDeleteComment.submit()
+    }
 
     toggleFollowing = async id => {
       const data = {

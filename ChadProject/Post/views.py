@@ -2,8 +2,9 @@ import json
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView, View
+from django.views.generic import ListView, DetailView, DeleteView, View
 from django.http import JsonResponse
+from django.urls import reverse_lazy
 from . models import Post, Comment
 
 class PostList(LoginRequiredMixin,ListView) :
@@ -37,6 +38,14 @@ class AddComment(View) :
     post = Post.objects.get(id=postID)
     Comment.objects.create(owner = request.user, post = post, comment=comment)
     return redirect('Post:Detail', pk = post.id)
+  
+
+class DeleteComment(DeleteView) :
+  model = Comment
+  
+  def get_success_url(self) :
+    post = self.object.post
+    return reverse_lazy('Post:Detail', kwargs= {'pk' : post.id})
   
 
 

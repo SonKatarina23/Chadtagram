@@ -101,18 +101,17 @@
                           </a>
                         </div>
                       {% endif %}
-
-                      {% for comment in post.comments.all  %}
-                        {% if forloop.counter0 < 2 %}
-                          <!-- Individual Comment -->
-                          <div class="description mb-3">
-                            <a href="{{comment.owner.get_absolute_url}}">
-                              <strong>{{comment.owner.username}}</strong>
-                            </a>
-                            {{comment.comment}}
-                          </div>
-                        {% endif %}
-                      {% endfor %}                        
+                      
+                      {% for comment in post.get_latest_comments  %}
+                         <!-- Individual Comment -->
+                         <div class="description mb-3">
+                          <a href="{{comment.owner.get_absolute_url}}">
+                            <strong>{{comment.owner.username}}</strong>
+                          </a>
+                          {{comment.comment}}
+                        </div>
+                      {% endfor %}
+                       
                     </div>
 
                     <!-- ADD COMMENT -->

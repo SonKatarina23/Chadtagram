@@ -15,6 +15,8 @@ class PostList(LoginRequiredMixin,ListView) :
       return Post.objects.all().order_by('-created_at')
   
   
+  
+  
 class PostDetail(LoginRequiredMixin,DetailView) :
   model = Post
   template_name = 'Post/PostDetail.html'

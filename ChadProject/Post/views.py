@@ -1,6 +1,6 @@
 import json
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, View
 from django.http import JsonResponse
@@ -23,29 +23,22 @@ class PostDetail(LoginRequiredMixin,DetailView) :
   def get_context_data(self, **kwargs):
       context = super().get_context_data(**kwargs)
 
-      # Retriving comments
-      comments = Comment.objects.filter(post=self.object).order_by('-created_at')
-      context["comments"] = comments
-
-      # Check if this post is his/her own post
-      is_own = self.object.owner == self.request.user
-      context["is_own"] = is_own
-
-      # Check if this post'sowner is followed by current user
-      is_following = self.request.user in self.object.owner.followers.all()
-      context["is_following"] = is_following
+      context["comments"] = Comment.objects.filter(post=self.object).order_by('-created_at')
+      context["is_own"] = self.object.owner == self.request.user
+      context["is_following"] = self.request.user in self.object.owner.followers.all()
 
       return context
   
 class AddComment(View) :
   def post(self, request, *args, **kwargs) :
-    postID = json.loads(request.body)['postID']
-    comment = json.loads(request.body)['comment']
+    postID = request.POST['postID']
+    comment = request.POST['comment']
 
     post = Post.objects.get(id=postID)
-    Comment.objects.create(user = request.user, post = post, comment=comment)
-    return JsonResponse({}) # Aint no need to return anything
-    
+    Comment.objects.create(owner = request.user, post = post, comment=comment)
+    return redirect('Post:Detail', pk = post.id)
+  
+
 
 class ToggleLike(View) :
   def post(self, request, *args, **kwargs) :

@@ -72,7 +72,6 @@ class Register(View) :
 class ToggleFollow(View) :
   def post(self, request, *args, **kwargs) :
     username = json.loads(request.body)['username'] # This is a string passed in with axios
-    print(f'Username received : {username}')
     profile_seen = User.objects.get(username=username)
 
     if request.user in profile_seen.followers.all() : # Auth user is following this

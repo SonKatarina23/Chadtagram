@@ -200,12 +200,23 @@
   <script>
     let likeIcon, likeCount;
 
-    likePost = id => {
-      console.log(`Liking post with double click, id : ${id}`)
+    likePost = async id => {
+      const data = {
+        'postID' : id
+      }
+      const url = 'http://127.0.0.1:8000/ajax/like-post'
+      const config = axiosConfig()
+      const res = await axios.post(url, JSON.stringify(data), config)
+      
+      const { updated_like_count } = res.data
+      likeIcon = document.querySelector(`#like-icon-${id}`)
+      likeIcon.className = 'heart like big icon mr-3 red' 
+
+      likeCount = document.querySelector(`#like-count-${id}`)
+      likeCount.innerText = `${updated_like_count} ${updated_like_count > 1 ? 'likes' : 'like'}`
     }
 
     toggleLike = async id => {
-      console.log(`Toggling post with click on icon, id : ${id}`)
       const data = {
         'postID' : id
       }
@@ -216,7 +227,7 @@
       const { updated_is_liking, updated_like_count } = res.data
       likeIcon = document.querySelector(`#like-icon-${id}`)
       likeIcon.className = updated_is_liking 
-        ? '"heart like big icon mr-3 red' 
+        ? 'heart like big icon mr-3 red' 
         : 'heart outline like big icon mr-3'
 
       likeCount = document.querySelector(`#like-count-${id}`)

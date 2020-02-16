@@ -25,7 +25,6 @@ class PostDetail(LoginRequiredMixin,DetailView) :
 class ToggleLike(View) :
   def post(self, request, *args, **kwargs) :
     postID = json.loads(request.body)['postID']
-    print(f'Post id received : {postID}')
     post = Post.objects.get(id=postID)
 
     if request.user in post.liked_by.all() :
@@ -37,12 +36,23 @@ class ToggleLike(View) :
       updated_like_count = len(post.liked_by.all()) + 1
       post.liked_by.add(request.user)
       updated_is_liking = True
-        
-    print(f'Updated like count : {updated_like_count}')
     
     return JsonResponse({
       'updated_is_liking' : updated_is_liking,
       'updated_like_count' : updated_like_count
     })
 
+class LikePost(View) : 
+  def post(self, request, *args, **kwargs) :
+    postID = json.loads(request.body)['postID']
+    post = Post.objects.get(id=postID)
 
+    if request.user in post.liked_by.all() :
+      updated_like_count = len(post.liked_by.all())
+    else :
+      updated_like_count = len(post.liked_by.all()) + 1
+      post.liked_by.add(request.user)
+
+    return JsonResponse({
+      'updated_like_count' : updated_like_count
+    })

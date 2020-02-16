@@ -37,7 +37,15 @@ class PostDetail(LoginRequiredMixin,DetailView) :
 
       return context
   
+class AddComment(View) :
+  def post(self, request, *args, **kwargs) :
+    postID = json.loads(request.body)['postID']
+    comment = json.loads(request.body)['comment']
 
+    post = Post.objects.get(id=postID)
+    Comment.objects.create(user = request.user, post = post, comment=comment)
+    return JsonResponse({}) # Aint no need to return anything
+    
 
 class ToggleLike(View) :
   def post(self, request, *args, **kwargs) :

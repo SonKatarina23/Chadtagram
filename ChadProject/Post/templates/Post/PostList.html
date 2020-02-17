@@ -24,7 +24,8 @@
                           </p>
                         </div>
                         <div class="ui image">
-                          <a href="{{post.owner.get_absolute.url}}">
+                          <!-- href="{% url 'Accounts:Profile' username=post.owner.username %}" -->
+                          <a href="{{post.owner.get_absolute_url}}">
                             <img
                               class="ui avatar massive image"
                               src="{{post.owner.profile_picture.url}}"

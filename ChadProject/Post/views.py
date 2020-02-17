@@ -25,11 +25,9 @@ class PostDetail(LoginRequiredMixin,DetailView) :
 
   def get_context_data(self, **kwargs):
       context = super().get_context_data(**kwargs)
-
       context["comments"] = Comment.objects.filter(post=self.object).order_by('-created_at')
       context["is_own"] = self.object.owner == self.request.user
       context["is_following"] = self.request.user in self.object.owner.followers.all()
-
       return context
 
 
@@ -66,6 +64,7 @@ class DeletePost(DeleteView) :
   success_url = reverse_lazy('Post:List')
 
 
+
 class AddComment(LoginRequiredMixin, View) :
   def post(self, request, *args, **kwargs) :
     postID = request.POST['postID']
@@ -83,7 +82,6 @@ class DeleteComment(LoginRequiredMixin, DeleteView) :
     post = self.object.post
     return reverse_lazy('Post:Detail', kwargs= {'pk' : post.id})
   
-
 
 class ToggleLike(LoginRequiredMixin, View) :
   def post(self, request, *args, **kwargs) :

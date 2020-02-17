@@ -68,6 +68,8 @@
                   </button>
 
                   <!-- HIDDEN FORM -->
+                  <!-- PS : Django delete view requires POST request if u don't want confirm_delete page -->
+                  <!-- PS 2 : Honestly could override get method with post in the view but thats nasty lol -->
                   <form 
                     action="{% url 'Post:Delete' pk=post.id %}" 
                     method="POST"
@@ -108,6 +110,7 @@
                               <!-- <span class="date">Today at 5:42PM</span> -->
                               <span class="date">{{comment.created_at|naturalday|capfirst }}</span>
                               {% if comment.owner == request.user or comment.post.owner == request.user %}
+                                 <!-- HIDDEN FORM, same idea here with Delete View -->
                                 <form 
                                   action="{% url 'Post:Delete_Comment' pk=comment.id %}" 
                                   method='POST'

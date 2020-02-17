@@ -61,6 +61,9 @@ class UpdatePost(UpdateView) :
       return context
   
 
+class DeletePost(DeleteView) :
+  model = Post
+  success_url = reverse_lazy('Post:List')
 
 
 class AddComment(LoginRequiredMixin, View) :

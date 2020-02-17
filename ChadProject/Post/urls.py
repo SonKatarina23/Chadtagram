@@ -13,6 +13,7 @@ urlpatterns = [
 
     path('', views.PostList.as_view(), name='List'),
     path('p/<pk>/update', views.UpdatePost.as_view(), name='Update'),
+    path('p/<pk>/delete', views.DeletePost.as_view(), name='Delete'),
     path('p/create-post', views.CreatePost.as_view(), name='Create'),
     path('p/<pk>', views.PostDetail.as_view(), name='Detail')
 ]

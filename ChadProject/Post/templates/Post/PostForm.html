@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %} Chadtagram | Create New Post {% endblock title %}
+{% block title %} Chadtagram | {{title}} {% endblock title %}
 
 {% block content %}
   <form method='POST' enctype="multipart/form-data">
@@ -10,10 +10,10 @@
       <div class="row">
         <div class="col-md-8 m-auto">
           <h2 class="mb-5">
-            <strong>Create New Post</strong>
+            <strong>{{title}}</strong>
           </h2>
           {{form|crispy}}
-          <button class="btn btn-primary btn-block">Create New Post</button>
+          <button class="btn btn-primary btn-block">{{title}}</button>
         </div>
       </div>
       

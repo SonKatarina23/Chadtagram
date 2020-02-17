@@ -2,7 +2,7 @@ import json
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView, DeleteView, View
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 
@@ -33,23 +33,34 @@ class PostDetail(LoginRequiredMixin,DetailView) :
       return context
 
 
-class CreatePost(View) :
-  def post(self,request, *args, **kwargs) :
-    form = PostForm(request.POST, request.FILES)
+class CreatePost(CreateView) :
+  model = Post
+  form_class = PostForm
+  template_name = 'Post/PostForm.html'
 
-    if form.is_valid() :
-      instance = form.save(commit=False)
-      instance.owner = request.user
-      new_post_id = instance.id
-      instance.save()
-      return redirect('Post:Detail', pk = new_post_id)
+  def get_context_data(self, **kwargs):
+      context = super().get_context_data(**kwargs)
+      context["form"] = self.get_form_class()
+      context["title"] = 'Create New Post'
+      return context
+  
+  def form_valid(self, form) :
+    form.instance.owner = self.request.user
+    return super().form_valid(form)
+  
 
-    else :
-      return render(request, 'Post/CreatePost.html', { 'form' : form})
+class UpdatePost(UpdateView) :
+  model = Post
+  form_class = PostForm
+  template_name = 'Post/PostForm.html'
 
-  def get(self, request, *args, **kwargs) :
-    form = PostForm()
-    return render(request, 'Post/CreatePost.html', { 'form' : form})
+  def get_context_data(self, **kwargs):
+      context = super().get_context_data(**kwargs)
+      context["form"] = PostForm(self.request.GET, instance=self.get_object())
+      context["title"] = 'Update Post' 
+      return context
+  
+
 
 
 class AddComment(LoginRequiredMixin, View) :

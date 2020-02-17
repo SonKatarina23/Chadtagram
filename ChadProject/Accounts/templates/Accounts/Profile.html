@@ -117,8 +117,9 @@
             <div class="ui grid">
               
               {% if is_own_profile %}
+                 <!-- OPTION TO ADD POST FOR OWNER -->
                 <div class="five wide column mb-2 my-auto">
-                  <a href="{{post.get_absolute_url}}">
+                  <a href="{% url 'Post:Create_Post' %}">
                     <div class="m-auto">
                       <img
                         src="{% static 'img/CameraIcon.png' %}"

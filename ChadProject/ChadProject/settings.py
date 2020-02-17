@@ -40,9 +40,13 @@ INSTALLED_APPS = [
 
     'django.contrib.humanize',
 
+    'crispy_forms',
+
     'Accounts',
     'Post'
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

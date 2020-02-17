@@ -5,7 +5,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, DeleteView, View
 from django.http import JsonResponse
 from django.urls import reverse_lazy
+
 from . models import Post, Comment
+from . forms import PostForm
 
 class PostList(LoginRequiredMixin,ListView) :
   model = Post
@@ -29,8 +31,28 @@ class PostDetail(LoginRequiredMixin,DetailView) :
       context["is_following"] = self.request.user in self.object.owner.followers.all()
 
       return context
-  
-class AddComment(View) :
+
+
+class CreatePost(View) :
+  def post(self,request, *args, **kwargs) :
+    form = PostForm(request.POST, request.FILES)
+
+    if form.is_valid() :
+      instance = form.save(commit=False)
+      instance.owner = request.user
+      new_post_id = instance.id
+      instance.save()
+      return redirect('Post:Detail', pk = new_post_id)
+
+    else :
+      return render(request, 'Post/CreatePost.html', { 'form' : form})
+
+  def get(self, request, *args, **kwargs) :
+    form = PostForm()
+    return render(request, 'Post/CreatePost.html', { 'form' : form})
+
+
+class AddComment(LoginRequiredMixin, View) :
   def post(self, request, *args, **kwargs) :
     postID = request.POST['postID']
     comment = request.POST['comment']
@@ -40,7 +62,7 @@ class AddComment(View) :
     return redirect('Post:Detail', pk = post.id)
   
 
-class DeleteComment(DeleteView) :
+class DeleteComment(LoginRequiredMixin, DeleteView) :
   model = Comment
   
   def get_success_url(self) :
@@ -49,7 +71,7 @@ class DeleteComment(DeleteView) :
   
 
 
-class ToggleLike(View) :
+class ToggleLike(LoginRequiredMixin, View) :
   def post(self, request, *args, **kwargs) :
     postID = json.loads(request.body)['postID']
     post = Post.objects.get(id=postID)
@@ -69,7 +91,7 @@ class ToggleLike(View) :
       'updated_like_count' : updated_like_count
     })
 
-class LikePost(View) : 
+class LikePost(LoginRequiredMixin, View) : 
   def post(self, request, *args, **kwargs) :
     postID = json.loads(request.body)['postID']
     post = Post.objects.get(id=postID)

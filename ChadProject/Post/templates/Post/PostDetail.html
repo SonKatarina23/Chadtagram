@@ -61,17 +61,19 @@
                     <i class="cog icon"></i>
                     Edit
                   </a>
-                  <form 
-                    action="{% url 'Post:Delete' pk=post.id %}" 
-                    method="POST"
-                    id="form-delete-post-{{post.id}}"
-                  >
-                    {% csrf_token %}
-                  </form>
+                  
                   <button class="ui mini button negative" onclick="deletePost('{{post.id}}')">
                     <i class="x icon"></i>
                     Delete
                   </button>
+
+                  <!-- HIDDEN FORM -->
+                  <form 
+                    action="{% url 'Post:Delete' pk=post.id %}" 
+                    method="POST"
+                    id="form-delete-post-{{post.id}}"
+                  > {% csrf_token %}
+                  </form>
                 {% endif %}
                     
               </section>

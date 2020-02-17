@@ -9,6 +9,24 @@ from django.urls import reverse_lazy
 from . models import Post, Comment
 from . forms import PostForm
 
+##############################################  POST  ###################################################
+
+
+class CreatePost(CreateView) :
+  model = Post
+  form_class = PostForm
+  template_name = 'Post/PostForm.html'
+
+  def get_context_data(self, **kwargs):
+      context = super().get_context_data(**kwargs)
+      context["form"] = self.get_form_class()
+      context["title"] = 'Create New Post'
+      return context
+  
+  def form_valid(self, form) :
+    form.instance.owner = self.request.user
+    return super().form_valid(form)
+
 class PostList(LoginRequiredMixin,ListView) :
   model = Post
   template_name = 'Post/PostList.html'
@@ -29,22 +47,6 @@ class PostDetail(LoginRequiredMixin,DetailView) :
       context["is_own"] = self.object.owner == self.request.user
       context["is_following"] = self.request.user in self.object.owner.followers.all()
       return context
-
-
-class CreatePost(CreateView) :
-  model = Post
-  form_class = PostForm
-  template_name = 'Post/PostForm.html'
-
-  def get_context_data(self, **kwargs):
-      context = super().get_context_data(**kwargs)
-      context["form"] = self.get_form_class()
-      context["title"] = 'Create New Post'
-      return context
-  
-  def form_valid(self, form) :
-    form.instance.owner = self.request.user
-    return super().form_valid(form)
   
 
 class UpdatePost(UpdateView) :
@@ -54,7 +56,7 @@ class UpdatePost(UpdateView) :
 
   def get_context_data(self, **kwargs):
       context = super().get_context_data(**kwargs)
-      context["form"] = PostForm(self.request.GET, instance=self.get_object())
+      context["form"] = self.get_form_class()(self.request.GET, instance=self.get_object())
       context["title"] = 'Update Post' 
       return context
   
@@ -64,6 +66,7 @@ class DeletePost(DeleteView) :
   success_url = reverse_lazy('Post:List')
 
 
+##############################################  COMMENT  ###################################################
 
 class AddComment(LoginRequiredMixin, View) :
   def post(self, request, *args, **kwargs) :
@@ -82,6 +85,8 @@ class DeleteComment(LoginRequiredMixin, DeleteView) :
     post = self.object.post
     return reverse_lazy('Post:Detail', kwargs= {'pk' : post.id})
   
+
+##############################################  AJAX  ###################################################
 
 class ToggleLike(LoginRequiredMixin, View) :
   def post(self, request, *args, **kwargs) :

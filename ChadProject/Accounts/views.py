@@ -2,18 +2,18 @@ import json
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import View,DetailView
+from django.views.generic import View,DetailView, UpdateView
 from django.contrib import messages
 from django.http import JsonResponse
 
 from . models import User
+from . forms import UserForm
 from Post.models import Post
 
 class Profile(LoginRequiredMixin,DetailView) :
   model = User
   template_name = 'Accounts/Profile.html'
   context_object_name = 'user'
-  pk_url_kwarg = 'username'
 
   def get_object(self) :
     return get_object_or_404(User, username=self.kwargs['username'])
@@ -25,6 +25,15 @@ class Profile(LoginRequiredMixin,DetailView) :
       context["is_own_profile"] = self.request.user == self.object
       context["is_following"] = self.request.user in self.object.followers.all()
       return context
+
+
+class EditProfile(LoginRequiredMixin, UpdateView) :
+  model = User
+  form_class = UserForm
+  template_name = 'Accounts/EditProfile.html'
+  
+  def get_object(self) :
+    return get_object_or_404(User, username=self.kwargs['username'])
 
 
 class Register(View) :

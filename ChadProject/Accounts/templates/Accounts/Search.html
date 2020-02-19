@@ -5,16 +5,46 @@
 {% block content %}
   <div class="container">
     <div class="mt-5">
-      <p class="lead">
-        Showing results for 
-        <strong>'{{search}}'</strong>
+      <p class="lead mb-5">
+        {% if search %}
+          Showing results for 
+          <strong>'{{search}}'</strong>
+        {% else %}
+          Cannot search for empty query. Please submit a non-empty keyword 
+        {% endif %}   
       </p>
-      {% for user in user_results %}
-        <p class="lead">{{user}}</p>
-      {% empty %}
-        <p class="lead">There is no user found</p>
-      {% endfor %}
     </div>
+
+    
+    {% if search %}
+      {% if user_results %}
+        <div class="ui items">
+          {% for user in user_results %}
+            <div class="item mb-5">
+              <a class="ui tiny circular image" href="{{user.get_absolute_url}}">
+                <img src="{{user.profile_picture.url}}" id="search-avatar">
+              </a>
+              <div class="content">
+                <a class="header" href="{{user.get_absolute_url}}" id="search-name">
+                  {% if user.first_name and user.last_name %}
+                    {{user.first_name}} {{user.last_name}} ({{user}})
+                  {% else %}
+                    {{user}}
+                  {% endif %}
+                  
+                </a>
+                <div class="description">
+                  <p class="text-muted">{{user.bio}}</p>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="lead">There is no user found</p>
+      {% endif %}
+    {% endif %}
+      
   </div>
     
 {% endblock content %}

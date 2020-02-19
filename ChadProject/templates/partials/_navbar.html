@@ -16,14 +16,19 @@
       
       <div class="ml-auto my-auto">
         <div class="item center mr-5">
-          <div class="ui transparent icon input">
-            <div class="ui medium form mr-3">
-              <input type="text" placeholder="Search..." />
+          <form method="GET" action="{% url 'Accounts:Search' %}" id="search-form">
+            <div class="ui transparent icon input">
+              <div class="ui medium form mr-3">
+                <input type="text" name="search" placeholder="Search..." />
+              </div>
             </div>
-          </div>
-          <i class="search link large icon"></i>
+          </form>
+          <a onclick="submitForm()">
+            <i class="search link large icon"></i>
+          </a>
         </div>
       </div>
+
       <div class="right menu">
         <a class="item" href="{% url 'Post:List' %}">
           <i class="heart outline big icon"></i>
@@ -39,3 +44,9 @@
   </div>
   <div class="ui huge horizontal divider header"></div>
 </section>
+
+<script>
+  form = document.querySelector('#search-form')
+  console.log(form)
+  submitForm = () => form.submit()
+</script>

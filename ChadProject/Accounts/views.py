@@ -2,9 +2,10 @@ import json
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import View,DetailView, UpdateView
+from django.views.generic import View, ListView, DetailView, UpdateView
 from django.contrib import messages
 from django.http import JsonResponse
+from django.db.models import Q
 
 from . models import User
 from . forms import UserForm
@@ -34,7 +35,40 @@ class EditProfile(LoginRequiredMixin, UpdateView) :
   
   def get_object(self) :
     return get_object_or_404(User, username=self.kwargs['username'])
+  
+  def get_context_data(self, **kwargs):
+      context = super().get_context_data(**kwargs)
+      user = self.get_object()
+      context["title_name"] = f'{user.first_name.capitalize()} {user.last_name.capitalize()}'
+      return context
+  
 
+class SearchUser(LoginRequiredMixin, ListView) :
+  model = User
+  template_name = 'Accounts/Search.html'
+  context_object_name = 'user_results'
+
+  def get_queryset(self) :
+    try :
+      search = self.request.GET.get('search')
+    except :
+      search = ''
+
+    if search != '' :
+      self.search = search
+      users = User.objects.filter(
+        Q(first_name__icontains=search) | Q(last_name__icontains=search) | Q(username__icontains=search)
+      )
+    else :
+      users = User.objects.none()
+    
+    return users
+  
+  def get_context_data(self, **kwargs):
+      context = super().get_context_data(**kwargs)
+      context["search"] = self.search
+      return context
+  
 
 class Register(View) :
   def get(self, request, *args, **kwargs) :

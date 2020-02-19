@@ -28,7 +28,7 @@ class Post(models.Model):
         return reverse("Post:Detail", kwargs={"pk": self.pk})
 
     def get_all_comments(self) :
-        return self.comments.order_by('created_at')
+        return self.comments.all().order_by('created_at')
 
     def get_latest_comments(self) :
         return self.comments.order_by('-created_at')[:2]

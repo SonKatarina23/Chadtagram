@@ -93,3 +93,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_absolute_url(self):
         return reverse("Accounts:Profile", kwargs={"username": self.username})
     
+    def get_all_posts(self) :
+        return self.posts.all().order_by('-created_at')
+    

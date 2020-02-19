@@ -27,6 +27,9 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse("Post:Detail", kwargs={"pk": self.pk})
 
+    def get_all_comments(self) :
+        return self.comments.order_by('created_at')
+
     def get_latest_comments(self) :
         return self.comments.order_by('-created_at')[:2]
     

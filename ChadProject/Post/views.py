@@ -34,7 +34,9 @@ class PostList(LoginRequiredMixin,ListView) :
   context_object_name = 'post_list'
 
   def get_queryset(self):
-      return Post.objects.all().order_by('-created_at')
+      # Only shows post from users whom current user follows
+      qs = Post.objects.filter(owner__followers__username=self.request.user.username).order_by('-created_at')
+      return qs
   
    
 class PostDetail(LoginRequiredMixin,DetailView) :

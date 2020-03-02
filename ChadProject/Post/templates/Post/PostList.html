@@ -169,7 +169,7 @@
 
           <!-- SUGGESTION -->
           {% if suggestions %}
-            <div class="ui segment">
+            <div class="ui segment" id="suggestion-div">
               <div class="ui teal ribbon label">Suggestions For You</div>
               <!-- SUGGESTION LIST -->
               <div class="ui middle aligned divided list">
@@ -179,7 +179,7 @@
                   <div class="item" id="suggestion-{{suggestion.id}}">
                     <div class="right floated content">
                       <div 
-                        class="ui tiny button primary"
+                        class="ui tiny button primary suggestions"
                         id="follow-suggestion-{{suggestion.id}}"
                         onclick="toggleFollowing('{{suggestion.id}}')"
                       >
@@ -210,7 +210,7 @@
 
   <script>
     let likeIcon, likeCount, loveMid;
-    let suggestion, followSuggestionBtn;
+    let suggestion, followSuggestionBtn, suggestionList, suggestionDiv;
 
     toggleFollowing = async id => {
       const data = {
@@ -225,9 +225,15 @@
       // DOM MANIPULATION
       suggestion = document.querySelector(`#suggestion-${id}`)
       followSuggestionBtn = document.querySelector(`#follow-suggestion-${id}`)
+      suggestionList = document.querySelectorAll('.suggestions')
+      suggestionDiv = document.querySelector('#suggestion-div')
 
       followSuggestionBtn.className = `ui tiny button ${updated_is_following ? '' : 'primary'}`
-      setTimeout(()=>suggestion.remove(), 1000)
+      setTimeout(()=>{
+        suggestion.remove();
+        suggestionList = document.querySelectorAll('.suggestions')
+        if(suggestionList.length <= 0) suggestionDiv.remove()
+      }, 1000)
     }
 
     likePost = async id => {

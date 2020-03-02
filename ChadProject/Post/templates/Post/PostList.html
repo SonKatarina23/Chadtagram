@@ -176,9 +176,15 @@
                 <!-- INDIVIDUAL SUGGESTION -->
                 <!-- Note : Make sure name aint too long, it'll break the markup otherwise -->
                 {% for suggestion in suggestions  %}
-                  <div class="item">
+                  <div class="item" id="suggestion-{{suggestion.id}}">
                     <div class="right floated content">
-                      <div class="ui button primary tiny">Follow</div>
+                      <div 
+                        class="ui tiny button primary"
+                        id="follow-suggestion-{{suggestion.id}}"
+                        onclick="toggleFollowing('{{suggestion.id}}')"
+                      >
+                        Follow
+                      </div>
                     </div>
                     <img class="ui avatar image" src="{{suggestion.profile_picture.url}}" />
                     <div class="content">
@@ -204,6 +210,25 @@
 
   <script>
     let likeIcon, likeCount, loveMid;
+    let suggestion, followSuggestionBtn;
+
+    toggleFollowing = async id => {
+      const data = {
+        'userID' : id
+      }
+      const url = 'http://127.0.0.1:8000/ajax/toggle-follow'
+      const config = axiosConfig()
+
+      const res = await axios.post(url, JSON.stringify(data), config)
+      const { updated_is_following } = res.data
+
+      // DOM MANIPULATION
+      suggestion = document.querySelector(`#suggestion-${id}`)
+      followSuggestionBtn = document.querySelector(`#follow-suggestion-${id}`)
+
+      followSuggestionBtn.className = `ui tiny button ${updated_is_following ? '' : 'primary'}`
+      setTimeout(()=>suggestion.remove(), 1000)
+    }
 
     likePost = async id => {
       const data = {

@@ -136,5 +136,5 @@ def Suggest(currentUser) :
   followings = User.objects.filter(followers=currentUser).values_list('username', flat=True)
   qs = User.objects.filter(
     ~Q(followers=currentUser) & ~Q(username=currentUser.username) & Q(followers__username__in=followings)
-  )
+  )[:10]
   return qs

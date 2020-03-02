@@ -181,7 +181,7 @@
                       <div 
                         class="ui tiny button primary suggestions"
                         id="follow-suggestion-{{suggestion.id}}"
-                        onclick="toggleFollowing('{{suggestion.id}}')"
+                        onclick="SuggestionToggleFollow('{{suggestion.id}}')"
                       >
                         Follow
                       </div>
@@ -212,15 +212,8 @@
     let likeIcon, likeCount, loveMid;
     let suggestion, followSuggestionBtn, suggestionList, suggestionDiv;
 
-    toggleFollowing = async id => {
-      const data = {
-        'userID' : id
-      }
-      const url = 'http://127.0.0.1:8000/ajax/toggle-follow'
-      const config = axiosConfig()
-
-      const res = await axios.post(url, JSON.stringify(data), config)
-      const { updated_is_following } = res.data
+    SuggestionToggleFollow = async id => {
+      const { updated_is_following } = await toggleFollow(id)
 
       // DOM MANIPULATION
       suggestion = document.querySelector(`#suggestion-${id}`)
@@ -250,9 +243,10 @@
       setTimeout(() => loveMid.style.display = 'none', 750)
       
       const { updated_like_count } = res.data
+
+      //DOM MANIPULATION
       likeIcon = document.querySelector(`#like-icon-${id}`)
       likeIcon.className = 'heart like big icon mr-3 red' 
-
       likeCount = document.querySelector(`#like-count-${id}`)
       likeCount.innerText = `${updated_like_count} ${updated_like_count > 1 ? 'likes' : 'like'}`
     }
@@ -266,6 +260,8 @@
       const res = await axios.post(url, JSON.stringify(data), config)
 
       const { updated_is_liking, updated_like_count } = res.data
+
+      // DOM MANIPULATION
       likeIcon = document.querySelector(`#like-icon-${id}`)
       likeIcon.className = updated_is_liking 
         ? 'heart like big icon mr-3 red' 
@@ -273,18 +269,6 @@
 
       likeCount = document.querySelector(`#like-count-${id}`)
       likeCount.innerText = `${updated_like_count} ${updated_like_count > 1 ? 'likes' : 'like'}`
-      
-    }
-
-    axiosConfig = () => {
-      const csrf = Cookies.get('csrftoken')
-      let config = {
-        headers : {
-          'Content-type' : 'application/json',
-          'X-CSRFToken' : csrf
-        }
-      }
-      return config
     }
 
   </script>

@@ -55,7 +55,7 @@
                         <button 
                           class="ui button small" 
                           id="follow-profile"
-                          onclick="toggleFollowing('{{user.id}}')"
+                          onclick="ProfileToggleFollow('{{user.id}}')"
                         >
                           <i class="user icon"></i>
                           Following
@@ -64,7 +64,7 @@
                         <button 
                           class="ui button small primary" 
                           id="follow-profile"
-                          onclick="toggleFollowing('{{user.id}}')"
+                          onclick="ProfileToggleFollow('{{user.id}}')"
                         >
                           <i class="user icon"></i>
                           Follow
@@ -170,15 +170,8 @@
   let followBtn, newIcon, followersCount, followersDesc
 
 
-  toggleFollowing = async id => {
-    const data = {
-      'userID' : id
-    }
-    const url = 'http://127.0.0.1:8000/ajax/toggle-follow'
-    const config = axiosConfig()
-    const res = await axios.post(url, JSON.stringify(data), config)
-
-    const { updated_is_following, updated_followers_count } = res.data
+  ProfileToggleFollow = async id => {
+    const { updated_is_following, updated_followers_count } = await toggleFollow(id)
 
     // DOM Manipulation
     followBtn = document.querySelector('#follow-profile')
@@ -195,21 +188,6 @@
     followersDesc = document.querySelector('#followers-desc')
     followersDesc.innerText = `${updated_followers_count > 1 ? 'Followers' : 'Follower'}`
     
-  }
-
-  axiosConfig = () => {
-    const csrf = Cookies.get('csrftoken')
-    let config = {
-      headers : {
-        'Content-type' : 'application/json',
-        'X-CSRFToken' : csrf
-      }
-    }
-    return config
-  }
-
-  clearChild = node => {
-    while(node.firstChild) node.removeChild(node.firstChild)
   }
 
 </script>

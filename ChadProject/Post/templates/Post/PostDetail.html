@@ -40,7 +40,7 @@
                     <button 
                       class="ui mini button" 
                       id="follow-btn-{{post.owner.id}}"
-                      onclick="toggleFollowing('{{post.owner.id}}')"
+                      onclick="PostDetailToggleFollow('{{post.owner.id}}')"
                     >
                       <i class="user icon"></i>
                       Following
@@ -49,7 +49,7 @@
                       <button 
                         class="ui button mini primary"
                         id="follow-btn-{{post.owner.id}}"
-                        onclick="toggleFollowing('{{post.owner.id}}')"
+                        onclick="PostDetailToggleFollow('{{post.owner.id}}')"
                       >
                         <i class="user icon"></i>
                         Follow
@@ -177,7 +177,6 @@
         const form = document.querySelector(`#form-delete-post-${id}`)
         form.submit()
       }
-      
     }
 
     deleteComment = id => {
@@ -185,15 +184,8 @@
       formDeleteComment.submit()
     }
 
-    toggleFollowing = async id => {
-      const data = {
-        'userID' : id
-      }
-      const url = 'http://127.0.0.1:8000/ajax/toggle-follow'
-      const config = axiosConfig()
-
-      const res = await axios.post(url, JSON.stringify(data), config)
-      const { updated_is_following } = res.data
+    PostDetailToggleFollow = async id => {
+      const { updated_is_following } = await toggleFollow(id)
 
       // DOM Manipulation part
       followBtn = document.querySelector(`#follow-btn-${id}`)
@@ -203,22 +195,6 @@
       newIcon.className = 'user icon'
       followBtn.appendChild(newIcon)
       followBtn.appendChild(document.createTextNode(`${updated_is_following ? 'Following' : 'Follow'}`))
-
-    }
-
-    axiosConfig = () => {
-      const csrf = Cookies.get('csrftoken')
-      let config = {
-        headers : {
-          'Content-type' : 'application/json',
-          'X-CSRFToken' : csrf
-        }
-      }
-      return config
-    }
-
-    clearChild = node => {
-      while(node.firstChild) node.removeChild(node.firstChild)
     }
 
   </script>

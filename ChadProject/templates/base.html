@@ -28,4 +28,32 @@
     {% block javascript %}{% endblock javascript %}
   </body>
 
+  <script>
+    axiosConfig = () => {
+      const csrf = Cookies.get('csrftoken')
+      let config = {
+        headers : {
+          'Content-type' : 'application/json',
+          'X-CSRFToken' : csrf
+        }
+      }
+      return config
+    }
+  
+    clearChild = node => {
+      while(node.firstChild) node.removeChild(node.firstChild)
+    }
+
+    toggleFollow = async id => {
+      const data = {
+        'userID' : id
+      }
+      const url = 'http://127.0.0.1:8000/ajax/toggle-follow'
+      const config = axiosConfig()
+      const res = await axios.post(url, JSON.stringify(data), config)
+      
+      return res.data
+    }
+  </script>
+
 </html>

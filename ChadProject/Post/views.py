@@ -5,9 +5,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from django.http import JsonResponse
 from django.urls import reverse_lazy
+from django.db.models import Q
 
 from . models import Post, Comment
 from . forms import PostForm
+
 
 ##############################################  POST  ###################################################
 
@@ -35,7 +37,10 @@ class PostList(LoginRequiredMixin,ListView) :
 
   def get_queryset(self):
       # Only shows post from users whom current user follows
-      qs = Post.objects.filter(owner__followers__username=self.request.user.username).order_by('-created_at')
+      qs = Post.objects.filter(
+        Q(owner__followers=self.request.user) | 
+        Q(owner=self.request.user)
+      ).order_by('-created_at').distinct()
       return qs
   
    

@@ -131,3 +131,10 @@ class ToggleFollow(View) :
       'updated_is_following' : updated_is_following,
       'updated_followers_count' : updated_followers_count
     })
+
+def Suggest(currentUser) :
+  followings = User.objects.filter(followers=currentUser).values_list('username', flat=True)
+  qs = User.objects.filter(
+    ~Q(followers=currentUser) & Q(followers__username__in=followings)
+  )
+  return qs

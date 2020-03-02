@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.db.models import Q
 
+from Accounts.views import Suggest
 from . models import Post, Comment
 from . forms import PostForm
 
@@ -42,6 +43,12 @@ class PostList(LoginRequiredMixin,ListView) :
         Q(owner=self.request.user)
       ).order_by('-created_at').distinct()
       return qs
+  
+  def get_context_data(self, **kwargs):
+      context = super().get_context_data(**kwargs)
+      context["suggestions"] = Suggest(self.request.user)
+      return context
+  
   
    
 class PostDetail(LoginRequiredMixin,DetailView) :

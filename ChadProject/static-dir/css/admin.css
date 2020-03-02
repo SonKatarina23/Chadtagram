@@ -1,0 +1,21 @@
+#header {
+  background:#00006e;
+  height: 40px !important;
+}
+
+img {
+  -webkit-filter: invert(1);
+  filter: invert(1);
+}
+
+div.breadcrumbs {
+  background: #30caa0;
+}
+
+.module h2, .module caption, .inline-group h2 {
+  background: #30caa0;
+}
+
+.submit-row input {
+  background-color: #30caa0;
+}

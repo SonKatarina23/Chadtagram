@@ -57,7 +57,8 @@ class SearchUser(LoginRequiredMixin, ListView) :
     self.search = search
     if search != '' :
       users = User.objects.filter(
-        Q(first_name__icontains=search) | Q(last_name__icontains=search) | Q(username__icontains=search)
+        Q(first_name__icontains=search) | Q(last_name__icontains=search) | Q(username__icontains=search),
+        ~Q(username__iexact='admin')
       )
     else :
       users = User.objects.none()
